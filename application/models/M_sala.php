@@ -94,5 +94,55 @@ class M_sala extends CI_Model
         //acima pela estrutura de decisão if
         return $dados;
     }
+
+    public function consultar($codigo, $descricao, $andar, $capacidade){
+        try {
+            //Query para consultar dados de acordo com parametros passados
+            $sql = "select * from tbl_sala where estatus = '' ";
+
+            if (trim($codigo) != '') {
+                $sql = $sql . " and codigo = $codigo";
+            }
+
+            if (trim($andar) != '') {
+                $sql = $sql . " and andar = '$andar'";
+            }
+
+            if (trim($descricao) != '') {
+                $sql = $sql . " and descricao like '%$descricao%' ";
+            }
+
+            if (trim($capacidade) != '') {
+                $sql = $sql . " and capacidade = '$capacidade'";
+            }
+
+            $sql = $sql . " order by codigo ";
+
+            $retorno = $this->db->query($sql);
+
+            //verificar se a consulta ocorreu com sucesso
+            if ($retorno->num_rows() > 0) {
+                $dados = array(
+                    'codigo' => 1,
+                    'msg' => 'Consulta efetuada com sucesso.',
+                    'dados' => $retorno->result()
+                );
+            }else{
+                $dados = array(
+                    'codigo' => 11,
+                    'msg' => 'Sala não encontrada.'
+                );
+            }
+
+        } catch (Exception $e) {
+            $dados = array(
+                'codigo' => 00,
+                'msg' => 'ATENÇÃO: O seguinte erro aconteceu ->' . $e->getMessage()
+            );
+        }
+        //envia o array $dados com as informaces tratadas
+        //acima pela estrutura de decisao if
+        return $dados;
+    }
 }
 ?>
