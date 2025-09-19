@@ -120,5 +120,32 @@ defined('BASEPATH') or exit('No direct script access allowed');
         //valor default da variavel $retorno caso não ocorra erro
         return array('codigoHelper' =>0, 'msg' => 'Validação correta.');;
     }
+
+
+    //funcao para verificar se datas ou horarios iniciais sao maioria entre eles
+    function compararDataHora($valorInicial, $valorFinal, $tipo){
+        //Passamos a strins para hora
+        $valorInicial = strtotime($valorInicial);
+        $valorFinal = strtotime($valorFinal);
+
+        if ($valorInicial != '' && $valorFinal != '') {
+            if ($valorInicial > $valorFinal) {
+                switch ($tipo) {
+                    case 'hora':
+                        return array('codigoHelper' => 13, 'msg' => 'Hora final menor que a hora inicial');
+                        break;
+                    
+                    case 'data':
+                        return array('codigoHelper' => 14, 'msg' => 'Data final menor que a data inicial.');
+                        break;
+                    default:
+                        return array('codigoHelper' => 15, 'msg' => 'Tipo de verificacao não definida');
+                }
+            }
+        }
+
+        //valor defaut da variavel $retorno caso não ocorra erro
+        return array('codigoHelper' => 0, 'msg' => 'Validacao correta.');
+    }
 ?>
 
