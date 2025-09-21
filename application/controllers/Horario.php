@@ -35,7 +35,7 @@ class Horario extends CI_Controller {
     public function setCodigo($codigoFront){$this->codigo=$codigoFront;}
     public function setDescricao($descricaoFront){$this->descricao=$descricaoFront;}
     public function setHoraInicial($horaInicialFront){$this->horaInicial=$horaInicialFront;}
-    public function setHoraFinal($horaFinalFront){$this->hotaFinal=$horaFinalFront;}
+    public function setHoraFinal($horaFinalFront){$this->horaFinal=$horaFinalFront;}
     public function setEstatus($estatusFront){$this->tipoUsuario=$estatusFront;}
 
     public function inserir(){
@@ -45,7 +45,7 @@ class Horario extends CI_Controller {
 
         try {
             $json = file_get_contents('php://input');
-            $resultadp = json_decode($json);
+            $resultado = json_decode($json);
             $lista = ["descricao"=>'0', "horaInicial"=>'0', "horaFinal" => '0'];
 
             if (verificarParam($resultado, $lista) != 1) {
@@ -83,7 +83,7 @@ class Horario extends CI_Controller {
                 if (empty($erros)) {
                     $this->setDescricao($resultado->descricao);
                     $this->setHoraInicial($resultado->horaInicial);
-                    $this->setHoraFinal($resultado->getHoraFinal);
+                    $this->setHoraFinal($resultado->horaFinal);
 
                     $this->load->model('M_horario');
                     $resBanco = $this->M_horario->inserir(
@@ -179,7 +179,7 @@ class Horario extends CI_Controller {
                     $this->setHoraInicial($resultado->horaInicial);
                     $this->setHoraFinal($resultado->horaFinal);
 
-                    $this->load-<model('M_horario');
+                    $this->load->model('M_horario');
                     $resBanco = $this->M_horario->consultar($this->getCodigo(),
                                                             $this->getDescricao(),
                                                             $this->getHoraInicial(),
@@ -229,9 +229,9 @@ class Horario extends CI_Controller {
                 }else{
                     //validar campos quanto ao tipo de dado e tamanho(helper)
                     $retornoCodigo = validarDados($resultado->codigo, 'int', true);
-                    $retornoDescricao = validarDados($resultado->descricao, 'string');
-                    $retornoHoraInicial = validarDados($resultado->horaInicial, 'hora');
-                    $retornoHoraFinal = validarDados($resultado->horaFinal, 'hora');
+                    $retornoDescricao = validarDadosConsulta($resultado->descricao, 'string');
+                    $retornoHoraInicial = validarDadosConsulta($resultado->horaInicial, 'hora');
+                    $retornoHoraFinal = validarDadosConsulta($resultado->horaFinal, 'hora');
 
                     $retornoComparacaoHoras = compararDataHora($resultado->horaInicial,$resultado->horaFinal, 'hora');
                     
@@ -272,16 +272,17 @@ class Horario extends CI_Controller {
                         $this->setHoraInicial($resultado->horaInicial);
                         $this->setHoraFinal($resultado->horaFinal);
 
-                        $this->load-<model('M_horario');
-                        $resBanco = $this->M_horario->consultar($this->getCodigo(),
+                        $this->load->model('M_horario');
+                        $resBanco = $this->M_horario->alterar($this->getCodigo(),
                                                                 $this->getDescricao(),
                                                                 $this->getHoraInicial(),
                                                                 $this->getHoraFinal());
-                        if ($resBanco['codigo']==1) {
-                            $sucesso = true;
-                        }else{
-                            //captura erro do banco
-                            $erros[] = ['codigo'=>$resBanco['codigo'], 'msg'=> $resBanco['msg']];
+                        if ($retornoCodigo['codigoHelper'] != 0) {
+                            $erros[] = [
+                                'codigo' => $retornoCodigo['codigoHelper'],
+                                'campo' => 'Codigo',
+                                'msg' => $retornoCodigo['msg']
+                            ];
                         }
                     }
                 }

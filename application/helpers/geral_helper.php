@@ -65,7 +65,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             
             case 'hora':
                 //Verifico se tem padrão de hora
-                if (!preg_match('/^(?:[01]\s|2[0-3]):[0-5]\d$/', $valor)) {
+                if (!preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d$/', $valor)) {
                     return array('codigoHelper' => 7, 'msg' => 'Hora em formato inválido.');
                 }
                 break;
