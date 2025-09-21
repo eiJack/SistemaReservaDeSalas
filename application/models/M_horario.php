@@ -16,7 +16,7 @@ class M_horario extends CI_Model{
     public function inserir($descricao, $horaInicial, $horaFinal){
         try {
             //verifico se o horario ja esta cadastrado
-            $retornoConsulta = $this->consultaHorario('',$horaInicial, $horaFinal);
+            $retornoConsulta = $this->consultarHorario('',$horaInicial, $horaFinal);
 
             if ($retornoConsulta['codigo'] != 9 && $retornoConsulta['codigo'] != 10) {
                 //query de insercao dos dados
@@ -55,7 +55,7 @@ class M_horario extends CI_Model{
 
             //verificar se a consulta ocorreu com sucesso
             if ($retornoHorario->num_rows() > 0) {
-                $linha = $retornoHorario->rows();
+                $linha = $retornoHorario->row();
                 if (trim($linha->estatus) == "D") {
                     $dados = array(
                         'codigo' => 9,
@@ -218,7 +218,7 @@ class M_horario extends CI_Model{
                 }
             }else {
                 $dados = array('codigo'=> $retornoConsulta['codigo'],
-                               'msg'=> $retornoConsulta['msg'];)
+                               'msg'=> $retornoConsulta['msg']);
             }
 
         } catch (Exception $e) {
