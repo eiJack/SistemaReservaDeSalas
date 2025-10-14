@@ -107,7 +107,7 @@ class Turma extends CI_Controller {
                         $sucesso = true;
                     }else{
                         //captura erro do banco
-                        $erros[] = ['codigo' => $resBanco['codigo'], 'msg'=:$resBanco['msg']];
+                        $erros[] = ['codigo' => $resBanco['codigo'], 'msg'=>$resBanco['msg']];
                     }
                 }
             }
@@ -133,7 +133,7 @@ class Turma extends CI_Controller {
         try {
             $json = file_get_contents('php://input');
             $resultado = json_decode($json);
-            $lista = ["codigo" => '0', "descricao"=> '0', "capacidade"= '0', "dataInicio" => '0'];
+            $lista = ["codigo" => '0', "descricao"=> '0', "capacidade"=> '0', "dataInicio" => '0'];
 
             if (verificarParam($resultado,$lista) != 1) {
                 //validar vindos de forma correta do frontend (helper)

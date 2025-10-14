@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed')
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_turma extends CI_Model{
     /* validacao dos tipos de retornos nas validacoes (codigo erro)
@@ -53,7 +53,7 @@ class M_turma extends CI_Model{
             $retorno = $this->db->query($sql);
 
             //verificar se a consulta ocorreu com sucesso
-            if ($retorno->nuk_rows() > 0) {
+            if ($retorno->num_rows() > 0) {
                 $dados = array('codigo'=>1, 'msg'=>'Consulta efetuada com sucesso', 'dados' => $retorno->result());
             }else {
                 $dados = array('codigo'=>11,'msg'=>'Turma não encontrada');

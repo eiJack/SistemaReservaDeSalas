@@ -56,7 +56,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     return array('codigoHelper' => 6, 'msg' => 'Data em formato inválido');
                 }else {
                     //Tenta criar DataTime no formato y-m-d
-                    $d = DataTime::createFromFormat('Y-m-d', $valor);
+                    $d = DateTime::createFromFormat('Y-m-d', $valor);
                     if (($d->format('Y-m-d') === $valor) == false) {
                         return array('codigoHelper' => 6, 'msg' => 'Data inválida.');
                     }
