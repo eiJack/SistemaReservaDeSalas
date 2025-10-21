@@ -95,11 +95,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
                 case 'date':
                     // verifico se tem padrão de data
-                    if (!preg_match('/(\d{4})-(\d{2})$/',$valor, $match)) {
+                    if (!preg_match('/^\d{4}-\d{2}-\d{2}$/',$valor, $match)) {
                         return array('codigoHelper' => 6, 'msg' => 'Data em formato inválido.');
                     }else{
                         //tenta criar DataTime no formato y-m-d
-                        $d = DateTime::createFromFormat('Y-m-d', $Valor);
+                        $d = DateTime::createFromFormat('Y-m-d', $valor);
                         if(($d->format('Y-m-d') === $valor) == false){
                             return array('codigoHelper' => 6, 'msg' => 'Data inválida');
                         }
