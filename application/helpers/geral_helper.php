@@ -147,5 +147,34 @@ defined('BASEPATH') or exit('No direct script access allowed');
         //valor defaut da variavel $retorno caso não ocorra erro
         return array('codigoHelper' => 0, 'msg' => 'Validacao correta.');
     }
+
+    function validarCPF($cpf){
+        //removendo rudo que nao for numero
+        $cpf = preg_replace('/[^0-9]/','',$cpf);
+
+        //cpf deve ter 11 digitos
+        if (strlen($cpf) !=11) {
+            return array('codigoHelper' => 15, 'msg' => 'CPF com menos de 11 digitos');
+        }
+
+        if (preg_match('/^(\d)\1{10}$/', $cpf)) {
+            return array('codigoHelper' => 16, 'msg' => 'CPF com todos os digitos iguais');
+        }
+        //calcular os digitos verificadores
+        for ($t = 9; $t < 11; $t++){
+            $soma = 0;
+            for ($i = 0; $i < $t; $i++){
+                $soma += $cpf[$i] * (($t + 1) - $i);
+            }
+            $digito = (10 * $soma) % 11;
+            $digito = ($digito == 10) ? 0 : $digito;
+
+            if ($cpf[$t] != $digito) {
+                return array('codigoHelper' => 17, 'msg' => 'CPF com digitos verificadores incorretos');
+            }
+        }
+
+        return array('codigoHelper' => 0, 'msg'=> 'CPF válido');
+    }
 ?>
 
