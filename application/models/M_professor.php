@@ -15,7 +15,7 @@ class M_professor extends CI_Model{
 
     public function inserir($nome, $cpf, $tipo){
         try {
-            //Verifico se professor já está cadastrada
+            //Verifico se professor já está cadastrado
             $retornoConsulta = $this->consultaProfessorCpf($cpf);
 
             if ($retornoConsulta['codigo'] != 9 &&
@@ -23,13 +23,13 @@ class M_professor extends CI_Model{
 
                 //Query de inserção dos dados
                 $this->db->query("insert into tbl_professor (nome, tipo, cpf)
-                                  values ({$nome}, '{$tipo}', {$cpf})");
+                                  values ('{$nome}', '{$tipo}', {$cpf})");
 
                 //Verificar se a inserção ocorreu com sucesso
                 if ($this->db->affected_rows() > 0) {
                     $dados = array(
                         'codigo' => 1,
-                        'msg' => 'Professor cadastrada corretamente'
+                        'msg' => 'Professor cadastrado corretamente'
                     );
                 } else {
                     $dados = array(
@@ -129,20 +129,20 @@ class M_professor extends CI_Model{
             //Query para consultar dados de acordo com parametros passados
             $sql = "select * from tbl_professor where estatus = '' ";
 
-            if (trim($codigo) != '') {
-                $sql = $sql . " and codigo = $codigo";
+            if (trim($codigo ?? '') != '') {
+                $sql .= " and codigo = $codigo";
             }
 
-            if (trim($cpf) != '') {
-                $sql = $sql . " and cpf = '$cpf'";
+            if (trim($cpf ?? '') != '') {
+                $sql .= " and cpf = '$cpf'";
+            }  
+
+            if (trim($nome ?? '') != '') {
+                $sql .= " and nome like '%$nome%'";
             }
 
-            if (trim($nome) != '') {
-                $sql = $sql . " and nome like '%$nome%' ";
-            }
-
-            if (trim($tipo) != '') {
-                $sql = $sql . " and tipo = '$tipo'";
+            if (trim($tipo ?? '') != '') {
+                $sql .= " and tipo = '$tipo'";
             }
 
             $sql = $sql . " order by nome ";
@@ -179,7 +179,7 @@ class M_professor extends CI_Model{
             //verifico se a sala ja esta cadastrada
             $retornoConsulta = $this->consultaProfessorCod($codigo);
 
-            if ($retornoConsulta['codigo'] == 10) {
+            if ($retornoConsulta['codigo'] == 1) {
                 //inicio a query para atualizacao
                 $query = "update tbl_professor set ";
 
@@ -226,7 +226,7 @@ class M_professor extends CI_Model{
             //verifico se a professor ja esta cadastrada
             $retornoConsulta = $this->consultaProfessorCod($codigo);
 
-            if ($retornoConsulta['codigo'] == 10){
+            if ($retornoConsulta['codigo'] == 1){
                 //query de atualizacao dos dados
                 $this->db->query("update tbl_professor set estatus = 'D'
                                   where codigo = $codigo");

@@ -161,7 +161,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             return array('codigoHelper' => 16, 'msg' => 'CPF com todos os digitos iguais');
         }
         //calcular os digitos verificadores
-        for ($t = 9; $t < 11, $t++){
+        for ($t = 9; $t < 11; $t++){
             $soma = 0;
             for ($i = 0; $i < $t; $i++){
                 $soma += $cpf[$i] * (($t + 1) - $i);

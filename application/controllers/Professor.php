@@ -137,7 +137,6 @@ class Professor extends CI_Controller {
                 $retornoCPF = validarDadosConsulta($resultado->cpf, 'string');
                 $retornoTipo = validarDadosConsulta($resultado->tipo, 'string');
 
-                $retornoComparacaoHoras = compararDataHora($resultado-> horaInicial, $resultado->horaFinal, 'hora');
 
                 if ($retornoCodigo['codigoHelper'] != 0) {
                     $erros[] = ['codigo'=> $retornoCodigo['codigoHelper'],
@@ -169,7 +168,7 @@ class Professor extends CI_Controller {
                     if ($retornoCPFNroValido['codigoHelper'] != 0) {
                         $erros[]=['codigo'=>$retornoCPFNroValido['codigoHelper'],
                                   'campo'=> 'CPF validacao numero',
-                                  'msg'=> $retornoCPFNroValido['msg']]
+                                  'msg'=> $retornoCPFNroValido['msg']];
                     }
                 }
 
