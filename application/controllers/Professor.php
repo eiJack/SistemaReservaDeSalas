@@ -33,7 +33,7 @@ class Professor extends CI_Controller {
     public function setCodigo($codigoFront){$this->codigo=$codigoFront;}
     public function setNome($nomeFront){$this->nome=$nomeFront;}
     public function setCpf($cpfFront){$this->cpf=$cpfFront;}
-    public function setTipo($tipoFront){$this->ctipo=$tipoFront;}
+    public function setTipo($tipoFront){$this->tipo=$tipoFront;}
     public function setEstatus($estatusFront){$this->estatus=$estatusFront;}
 
     public function inserir(){
