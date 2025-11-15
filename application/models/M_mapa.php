@@ -21,10 +21,10 @@ class M_mapa extends CI_Model{
 
     public function inserir($dataReserva, $codSala, $codHorario, $codTurma, $codProfessor){
         try {
-            $retornoConsultaReservaTotal = $this->consultaReservaTotal($dataReserva, $codSala, $codHorario, $codTurma, $codProfessor);
+            $retornoConsultarReservaTotal = $this->consultarReservaTotal($dataReserva, $codSala, $codHorario);
 
-            if ($retornoConsultaReservaTotal['codigo'] != 11 &&
-                $retornoConsultaReservaTotal['codigo'] != 7) {
+            if ($retornoConsultarReservaTotal['codigo'] == 11 ||
+                $retornoConsultarReservaTotal['codigo'] == 7) {
 
                 $salaObj = new M_sala();
                 $retornoConsultaSala = $salaObj->consultar($codSala, '', '','');
@@ -42,9 +42,9 @@ class M_mapa extends CI_Model{
                             $retornoConsultaProfessor = $professorObj->consultar($codProfessor,'','','');
 
                             if ($retornoConsultaProfessor['codigo'] == 1) {
-                                $this->db->query("insert into tbl_mapa(datareserva, sala, codigo_horario, 
-                                                  codigo_turma, codigo_professor) values ('".$dataReserva, "', 
-                                                  $codSala, $codHorario, $codTurma, $codProfessor)");
+                                $this->db->query("INSERT INTO tbl_mapa
+                                                    (datareserva, sala, codigo_horario, codigo_turma, codigo_professor)
+                                                    VALUES ('$dataReserva', $codSala, $codHorario, $codTurma, $codProfessor)");
                                 if ($this->db->affected_rows() > 0) {
                                     $dados = array('codigo' => 1, 'msg'=>'Agendamento cadastrado corretamente.');
                                 }else {
@@ -74,8 +74,8 @@ class M_mapa extends CI_Model{
                 }
             } else {
                 $dados = array(
-                    'codigo' => $retornoConsultaReservaTotal['codigo'],
-                    'msg' => $retornoConsultaReservaTotal['msg']
+                    'codigo' => $retornoConsultarReservaTotal['codigo'],
+                    'msg' => $retornoConsultarReservaTotal['msg']
                 );
             }
         } catch (Exception $e) {
@@ -137,13 +137,13 @@ class M_mapa extends CI_Model{
         return $dados;
     }
 
-    public function consultar($codigo, $nome, $cpf, $tipo){
+    public function consultar($codigo, $dataReserva, $codSala, $codHorario, $codTurma, $codProfessor){
         try {
             //Query para consultar dados de acordo com parametros passados
             $sql = "select m.codigo, date_format(m.datareserva, '%d-%m-%Y') datareservabra,
-                    datareserva, m.sala, s.descricao descsala, m.codigo_horario, h.descricao deshorario,
-                    ,m.codigo_turma, t.descricao descturma, m.codigo_professor, p.nome nome_professor
-                    from tbl_mapa m, tbla_professor p, tbl_horario h, tbl_turma t, tbl_sala s 
+                    datareserva, m.sala, s.descricao descsala, m.codigo_horario, h.descricao as deshorario,
+                    m.codigo_turma, t.descricao descturma, m.codigo_professor, p.nome as nome_professor
+                    from tbl_mapa m, tbl_professor p, tbl_horario h, tbl_turma t, tbl_sala s 
                     where m.estatus = '' and m.codigo_professor = p.codigo
                                          and m.codigo_horario   = h.codigo
                                          and m.codigo_turma     = t.codigo
@@ -209,7 +209,7 @@ class M_mapa extends CI_Model{
             //verifico se a sala ja esta cadastrada
             $retornoConsulta = $this->consultar($codigo, "","","","","");
 
-            if ($retornoConsultaCodigo['codigo'] == 1) {
+            if ($retornoConsulta['codigo'] == 1) {
                 //inicio a query para atualizacao
                 $query = "update tbl_mapa set ";
 
@@ -219,7 +219,7 @@ class M_mapa extends CI_Model{
                 }
 
                 if ($codSala !== '') {
-                    $salaObj .= new M_sala();
+                    $salaObj = new M_sala();
                     $retornoConsultaSala = $salaObj->consultar($codSala,'', '', '');
 
                     if ($retornoConsultaSala['codigo'] == 1) {
@@ -233,7 +233,7 @@ class M_mapa extends CI_Model{
                 }
 
                 if ($codHorario !== '') {
-                    $horarioObj .= new M_horario();
+                    $horarioObj = new M_horario();
                     $retornoConsultaHorario = $horarioObj->consultarHorario($codHorario,'', '', '');
 
                     if ($retornoConsultaHorario['codigo'] == 1) {
@@ -247,8 +247,8 @@ class M_mapa extends CI_Model{
                 }
 
                 if ($codTurma !== '') {
-                    $turmaObj .= new M_turma();
-                    $retornoConsultaTurma = $turmaObj->consultarTurmaCod($codTurma,'', '', '');
+                    $turmaObj = new M_turma();
+                    $retornoConsultaTurma = $turmaObj->consultaTurmaCod($codTurma,'', '', '');
 
                     if ($retornoConsultaTurma['codigo'] == 1) {
                         $query .= "codigo_turma = $codTurma, ";
@@ -261,7 +261,7 @@ class M_mapa extends CI_Model{
                 }
 
                 if ($codProfessor !== '') {
-                    $professorObj .= new M_professor();
+                    $professorObj = new M_professor();
                     $retornoConsultaProfessor = $professorObj->consultar($codProfessor,'', '', '');
 
                     if ($retornoConsultaProfessor['codigo'] == 1) {
