@@ -45,7 +45,7 @@ class Mapa extends CI_Controller {
     public function setCodigoSala($codigo_salaFront){$this->codigo_sala=$codigo_salaFront;}
     public function setCodigoHorario($codigo_horarioFront){$this->codigo_horario=$codigo_horarioFront;}
     public function setCodigoTurma($codigo_turmaFront){$this->codigo_turma=$codigo_turmaFront;}
-    public function setProfessor($professorFront){$this->codigo_professor=$codigo_professorFront;}
+    public function setCodigoProfessor($professorFront){$this->codigo_professor=$codigo_professorFront;}
     public function setEstatus($estatusFront){$this->estatus=$estatusFront;}
     public function setDataInicio($dataInicioFront){$this->dataInicio=$dataInicioFront;}
     public function setDataFim($dataFimFront){$this->dataFim=$dataFimFront;}
@@ -104,7 +104,7 @@ class Mapa extends CI_Controller {
                     $this->setCodigoSala($resultado->codSala);
                     $this->setCodigoHorario($resultado->codHorario);
                     $this->setCodigoTurma($resultado->codTurma);
-                    $this->setProfessor($resultado->codProfessor);
+                    $this->setCodigoProfessor($resultado->codProfessor);
 
                     $this->load->model('M_mapa');
                     $resBanco = $this->M_mapa->inserir(
@@ -112,7 +112,7 @@ class Mapa extends CI_Controller {
                         $this->getCodigoSala(),
                         $this->getCodigoHorario(),
                         $this->getCodigoTurma(),
-                        $this->getProfessor()
+                        $this->getCodigoProfessor()
                     );
 
                     if ($resBanco['codigo']==1) {
@@ -202,7 +202,7 @@ class Mapa extends CI_Controller {
                     $this->setCodigoSala($resultado->codSala);
                     $this->setCodigoHorario($resultado->codHorario);
                     $this->setCodigoTurma($resultado->codTurma);
-                    $this->setProfessor($resultado->codProfessor);
+                    $this->setCodigoProfessor($resultado->codProfessor);
 
                     $this->load->model('M_mapa');
                     $resBanco = $this->M_mapa->consultar($this->getCodigo(),
@@ -210,7 +210,7 @@ class Mapa extends CI_Controller {
                                                         $this->getCodigoSala(),
                                                         $this->getCodigoHorario(),
                                                         $this->getCodigoTurma(),
-                                                        $this->getProfessor());
+                                                        $this->getCodigoProfessor());
                     if ($resBanco['codigo']==1) {
                         $sucesso = true;
                     }else{
